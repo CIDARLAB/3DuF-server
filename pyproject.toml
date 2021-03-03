@@ -1,21 +1,15 @@
 [tool.poetry]
-name = "3duf-server"
+name = "3DuF-server"
 version = "0.1.0"
-description = "Server-side implementation for 3DuF that will have the extended manufacturing artifact generation pipeline and the design automation algorithms integrated."
-authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
-license = "BSDSD-3-Clause"
+description = ""
+authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-flask = "^1.1.2"
-parchmint = "^0.2.5"
-gdstk = "^0.2.0"
+python = "^3.8"
+parchmint = "^0.2.6"
 
 [tool.poetry.dev-dependencies]
-mypy = "^0.790"
-black = "^20.8b1"
-flake8 = "^3.8.4"
 
 [build-system]
-requires = ["poetry-core>=1.0.0a5"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
