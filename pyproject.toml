@@ -6,9 +6,9 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-parchmint = "^0.2.6"
 
 [tool.poetry.dev-dependencies]
+parchmint = {path = "/home/ubuntu/pyparchmint", develop=true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
