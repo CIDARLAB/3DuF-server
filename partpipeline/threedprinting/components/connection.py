@@ -4,6 +4,9 @@ sys.path.append("/usr/lib/freecad-python3/lib")
 import FreeCAD, Draft, Part
 import Mesh
 
+# class Connection:
+#     def __init__(self, obj, waypoints, type="circular"):
+
 # waypoints - Array of waypoints in form (x,y,z) tuple
 def createConnection(waypoints, radius=3):
     D = FreeCAD.newDocument()

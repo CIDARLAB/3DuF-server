@@ -1,9 +1,10 @@
-# parse 3DuF json files
 from parchmint import Device
 import sys
 import json
-from threedprinting.components.port import createPort
+from threedprinting.components.port import createPort, makePort
+from threedprinting.components.port import makeDroplet
 from threedprinting.components.connection import createConnection
+from threedprinting.components.box import makeBox
 from threedprinting.export import exportToSTL
 
 file_path = sys.argv[1]
@@ -19,13 +20,26 @@ connections = []
 
 for component in device.components:
     if component.entity == "PORT":
-        x = (component.xpos)//100
-        y = (component.ypos)//100
+        x = (component.xpos)
+        y = (component.ypos)
         print(x,y)
         pos = [x,y,-5]
-        port = createPort(pos)
+        port = makePort(pos)
         components.append(port)
-
+    elif component.entity == "NOZZLE DROPLET GENERATOR":
+        x = (component.xpos)
+        y = (component.ypos)
+        print(x,y)
+        pos = [x,y,-5]
+        droplet = makeDroplet(pos)
+        components.append(droplet)
+    else:
+        x = (component.xpos)
+        y = (component.ypos)
+        print(x,y)
+        pos = [x,y,-5]
+        box = makeBox(pos)
+        components.append(port)
 for connection in device.connections:
     dictionary = connection.__dict__
     waypoints = dictionary["params"].get_param("wayPoints")
