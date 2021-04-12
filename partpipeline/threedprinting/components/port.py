@@ -25,25 +25,9 @@ class Port:
         '''Do something when doing a recomputation, this method is mandatory'''
         fp.Shape = Part.makeCylinder(fp.Radius, fp.Height, fp.Position, fp.Direction)
 
-def makePort(position, radius=5, height=10):
+def makePort(position, radius=0.005, height=0.010):
     D=FreeCAD.newDocument()
     a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Port")
-    Port(a)
+    Port(a, radius=radius, height=height)
     D.recompute()
     return a
-
-def createPort(position, radius=5, height=10):
-    D = FreeCAD.newDocument()
-    
-    [x,y,z] = position
-    pnt = FreeCAD.Vector(x,y,z)
-
-    direction = FreeCAD.Vector(0,0,1)
-
-    cylinder = Part.makeCylinder(radius, height, pnt, direction)
-
-    obj = D.addObject("Part::Feature", "Section")
-    obj.Shape = cylinder
-
-    D.recompute()
-    return obj

@@ -9,7 +9,7 @@ sys.path.append("/home/ubuntu/3DuF-server/partpipeline/threedprinting")
 from export import exportToSTL
 
 class DropletGenerator:
-    def __init__(self, obj, position=[0,0,0], waterInputWidth=600, oilInputWidth=600, orificeSize=200,orificeLength=400,outputLength=600,outputWidth=600):
+    def __init__(self, obj, position=[0,0,0], waterInputWidth=0.6, oilInputWidth=0.6, orificeSize=0.2,orificeLength=0.4,outputLength=0.6,outputWidth=0.6):
         '''Add some custom properties to our port feature'''
         [x,y,z] = position
         pnt = FreeCAD.Vector(x,y,z)
@@ -32,8 +32,6 @@ class DropletGenerator:
         myDocument = FreeCAD.open(u"/home/ubuntu/export/droplet_generation.FCStd")
 
         sketch = myDocument.getObject("Sketch")
-        names = [con.Name for con in sketch.Constraints if con.Name != '']
-        print(names)
         sketch.setDatum("waterInputWidth",fp.waterInputWidth)
         sketch.setDatum("oilInputWidth",fp.oilInputWidth)
         sketch.setDatum("orificeSize",fp.orificeSize)
@@ -44,12 +42,12 @@ class DropletGenerator:
         FreeCAD.ActiveDocument.recompute()
         wire = sketch.Shape.Wires[0]
         face = Part.Face(wire)
-        extr = face.extrude(FreeCAD.Vector(0,0,10))
+        extr = face.extrude(FreeCAD.Vector(0,0,20))
         # extr.Length = 200
         fp.Shape = extr
 
 
-def makeDroplet(position, waterInputWidth=600, oilInputWidth=600, orificeSize=200,orificeLength=300,outputLength=600,outputWidth=600):
+def makeDroplet(position, waterInputWidth=0.600, oilInputWidth=0.600, orificeSize=0.200,orificeLength=0.300,outputLength=0.600,outputWidth=0.600):
     D=FreeCAD.newDocument()
     a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
     DropletGenerator(a, position, waterInputWidth, oilInputWidth, orificeSize,orificeLength,outputLength,outputWidth)
