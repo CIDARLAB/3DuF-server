@@ -5,8 +5,11 @@ import FreeCAD, Draft, Part
 import Mesh
 
 # class Connection:
-#     def __init__(self, obj, waypoints, type="circular"):
-
+#     def __init__(self, obj, waypoints, Type="circular"):
+#         '''Add some custom properties to our Connection Feature'''
+#         obj.addProperty("App::PropertyVectorList","Waypoints","Connection","Waypoints of Connection").waypoints=waypoints
+#         obj.addProperty("App::PropertyType","Type","Connection","Type of Connection").type=Type
+        
 # waypoints - Array of waypoints in form (x,y,z) tuple
 def createConnection(waypoints, radius=0.05):
     D = FreeCAD.newDocument()

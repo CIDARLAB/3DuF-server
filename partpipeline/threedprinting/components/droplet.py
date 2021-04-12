@@ -10,7 +10,7 @@ from export import exportToSTL
 
 class DropletGenerator:
     def __init__(self, obj, position=[0,0,0], waterInputWidth=0.6, oilInputWidth=0.6, orificeSize=0.2,orificeLength=0.4,outputLength=0.6,outputWidth=0.6, height=0.25):
-        '''Add some custom properties to our port feature'''
+        '''Add some custom properties to our Droplet Generator feature'''
         [x,y,z] = position
         pnt = FreeCAD.Vector(x,y,z)
 
@@ -41,7 +41,8 @@ class DropletGenerator:
         sketch.setDatum("outputWidth",fp.outputWidth)
 
         FreeCAD.ActiveDocument.recompute()
-        wire = sketch.Shape.Wires[0]
+        wire = sketch.Shape.Wires[0]  # check
+
         face = Part.Face(wire)
         extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
 

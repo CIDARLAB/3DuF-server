@@ -13,6 +13,8 @@ from threedprinting.export import exportToSTL
 
 myDocument = FreeCAD.newDocument()
 
+UM_MM = 1000  # Constant to convert um to mm 
+
 file_path = sys.argv[1]
 print("File Name: " + file_path)
 device = None
@@ -25,14 +27,14 @@ for component in device.components:
     if component.entity == "PORT":
         print("port")
 
-        x = (component.xpos)/1000
-        y = (component.ypos)/1000
+        x = (component.xpos)/UM_MM
+        y = (component.ypos)/UM_MM
 
         dictionary = component.__dict__
         params = dictionary["params"]
-        height = params.get_param("height")/1000
+        height = params.get_param("height")/UM_MM
         pos = [x,y,-height/2]
-        radius = params.get_param("portRadius")/1000
+        radius = params.get_param("portRadius")/UM_MM
         port = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Port")
         Port(port, pos, radius=radius, height=height)
         myDocument.recompute()
@@ -40,18 +42,18 @@ for component in device.components:
     elif component.entity == "NOZZLE DROPLET GENERATOR":
         print("droplet")
 
-        x = (component.xpos)/1000
-        y = (component.ypos)/1000
+        x = (component.xpos)/UM_MM
+        y = (component.ypos)/UM_MM
 
         dictionary = component.__dict__
         params = dictionary["params"]
-        waterInputWidth = params.get_param("waterInputWidth")/1000
-        oilInputWidth = params.get_param("oilInputWidth")/1000
-        orificeSize = params.get_param("orificeSize")/1000
-        orificeLength = params.get_param("orificeLength")/1000
-        outputLength = params.get_param("outputLength")/1000
-        outputWidth = params.get_param("outputWidth")/1000
-        height = params.get_param("height")/1000
+        waterInputWidth = params.get_param("waterInputWidth")/UM_MM
+        oilInputWidth = params.get_param("oilInputWidth")/UM_MM
+        orificeSize = params.get_param("orificeSize")/UM_MM
+        orificeLength = params.get_param("orificeLength")/UM_MM
+        outputLength = params.get_param("outputLength")/UM_MM
+        outputWidth = params.get_param("outputWidth")/UM_MM
+        height = params.get_param("height")/UM_MM
         pos = [x,y,-height/2]
 
         droplet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
@@ -60,12 +62,12 @@ for component in device.components:
 
     else:
         print(component.entity, "not implemented")
-        x = (component.xpos)/1000
-        y = (component.ypos)/1000
-        height = params.get_param("height")/1000
+        x = (component.xpos)/UM_MM
+        y = (component.ypos)/UM_MM
+        height = params.get_param("height")/UM_MM
         pos = [x,y,-height/2]
-        width = component.xspan/1000
-        length = component.yspan/1000
+        width = component.xspan/UM_MM
+        length = component.yspan/UM_MM
         box = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Box")
         Box(box, pos, height=height, width=width, length=length)
         myDocument.recompute()
@@ -77,8 +79,8 @@ for connection in device.connections:
     waypoints = dictionary["params"].get_param("wayPoints")
     P = []
     for (x,y) in waypoints:
-        x = x/1000
-        y = y/1000
+        x = x/UM_MM
+        y = y/UM_MM
         P.append((x,y,0))
     
     connectionObject = createConnection(P)
