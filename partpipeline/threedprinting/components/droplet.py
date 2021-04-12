@@ -9,7 +9,7 @@ sys.path.append("/home/ubuntu/3DuF-server/partpipeline/threedprinting")
 from export import exportToSTL
 
 class DropletGenerator:
-    def __init__(self, obj, position=[0,0,0], waterInputWidth=0.6, oilInputWidth=0.6, orificeSize=0.2,orificeLength=0.4,outputLength=0.6,outputWidth=0.6):
+    def __init__(self, obj, position=[0,0,0], waterInputWidth=0.6, oilInputWidth=0.6, orificeSize=0.2,orificeLength=0.4,outputLength=0.6,outputWidth=0.6, height=0.25):
         '''Add some custom properties to our port feature'''
         [x,y,z] = position
         pnt = FreeCAD.Vector(x,y,z)
@@ -21,8 +21,10 @@ class DropletGenerator:
         obj.addProperty("App::PropertyLength","orificeLength","DropletGenerator", "Orifice Length of the Droplet Generator").orificeLength=orificeLength
         obj.addProperty("App::PropertyLength","outputLength","DropletGenerator", "Output Length of the Droplet Generator").outputLength=outputLength
         obj.addProperty("App::PropertyLength","outputWidth","DropletGenerator", "Output Width of the Droplet Generator").outputWidth=outputWidth
+        obj.addProperty("App::PropertyLength","height","DropletGenerator","Height of the Droplet Generator").height=height
         obj.Proxy = self
-   
+        obj.Label = "3DuF_Object"
+
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
         FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
@@ -30,7 +32,6 @@ class DropletGenerator:
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
         myDocument = FreeCAD.open(u"/home/ubuntu/export/droplet_generation.FCStd")
-
         sketch = myDocument.getObject("Sketch")
         sketch.setDatum("waterInputWidth",fp.waterInputWidth)
         sketch.setDatum("oilInputWidth",fp.oilInputWidth)
@@ -40,17 +41,22 @@ class DropletGenerator:
         sketch.setDatum("outputWidth",fp.outputWidth)
 
         FreeCAD.ActiveDocument.recompute()
+        print("here1")
         wire = sketch.Shape.Wires[0]
         face = Part.Face(wire)
-        extr = face.extrude(FreeCAD.Vector(0,0,20))
-        # extr.Length = 200
+        print("here2")
+        extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
+        print("here2.5")
+
+        print("here3")
+        print(fp.height)
+
         fp.Shape = extr
 
-
-def makeDroplet(position, waterInputWidth=0.600, oilInputWidth=0.600, orificeSize=0.200,orificeLength=0.300,outputLength=0.600,outputWidth=0.600):
+def makeDroplet(position, waterInputWidth=0.600, oilInputWidth=0.600, orificeSize=0.200,orificeLength=0.300,outputLength=0.600,outputWidth=0.600, height=0.250):
     D=FreeCAD.newDocument()
     a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
-    DropletGenerator(a, position, waterInputWidth, oilInputWidth, orificeSize,orificeLength,outputLength,outputWidth)
+    DropletGenerator(a, position, waterInputWidth, oilInputWidth, orificeSize,orificeLength,outputLength,outputWidth, height)
     D.recompute()
     return a
 

@@ -25,51 +25,53 @@ for component in device.components:
     if component.entity == "PORT":
         print("port")
 
-        x = (component.xpos)
-        y = (component.ypos)
+        x = (component.xpos)/1000
+        y = (component.ypos)/1000
 
         dictionary = component.__dict__
         params = dictionary["params"]
-        height = params.get_param("height")
-        pos = [x,y,-height//2]
-        radius = params.get_param("portRadius")
-        port = FreeCAD.addObject("Part::FeaturePython", "Port")
+        height = params.get_param("height")/1000
+        pos = [x,y,-height/2]
+        radius = params.get_param("portRadius")/1000
+        port = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Port")
         Port(port, pos, radius=radius, height=height)
         myDocument.recompute()
     elif component.entity == "NOZZLE DROPLET GENERATOR":
         print("droplet")
 
-        x = (component.xpos)
-        y = (component.ypos)
+        x = (component.xpos)/1000
+        y = (component.ypos)/1000
 
         dictionary = component.__dict__
         params = dictionary["params"]
-        waterInputWidth = params.get_param("waterInputWidth")
-        oilInputWidth = params.get_param("oilInputWidth")
-        orificeSize = params.get_param("orificeSize")
-        orificeLength = params.get_param("orificeLength")
-        outputLength = params.get_param("outputLength")
-        outputWidth = params.get_param("outputWidth")
-        height = params.get_param("height")
-        pos = [x,y,-height//2]
+        waterInputWidth = params.get_param("waterInputWidth")/1000
+        oilInputWidth = params.get_param("oilInputWidth")/1000
+        orificeSize = params.get_param("orificeSize")/1000
+        orificeLength = params.get_param("orificeLength")/1000
+        outputLength = params.get_param("outputLength")/1000
+        outputWidth = params.get_param("outputWidth")/1000
+        height = params.get_param("height")/1000
+        pos = [x,y,-height/2]
 
-        print(waterInputWidth,oilInputWidth,orificeLength,orificeSize,outputLength,outputWidth)
+        print(waterInputWidth,oilInputWidth,orificeLength,orificeSize,outputLength,outputWidth, height)
 
         droplet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
-        DropletGenerator(droplet, pos, waterInputWidth, oilInputWidth, orificeSize,orificeLength,outputLength,outputWidth)
+        DropletGenerator(droplet, pos, waterInputWidth, oilInputWidth, orificeSize, orificeLength, outputLength, outputWidth, height)
         myDocument.recompute()
     else:
         print(component.entity, "not implemented")
-        x = (component.xpos)
-        y = (component.ypos)
+        x = (component.xpos)/1000
+        y = (component.ypos)/1000
         print(x,y)
-        height = params.get_param("height")
-        pos = [x,y,-height//2]
-        width = component.xspan
-        length = component.yspan
+        height = params.get_param("height")/1000
+        pos = [x,y,-height/2]
+        width = component.xspan/1000
+        length = component.yspan/1000
         box = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Box")
         Box(box, pos, height=height, width=width, length=length)
         myDocument.recompute()
+
+connections = []
 for connection in device.connections:
     dictionary = connection.__dict__
     waypoints = dictionary["params"].get_param("wayPoints")
@@ -87,5 +89,7 @@ objects = []
 for obj in FreeCAD.ActiveDocument.Objects:
     objects.append(obj)
 
-exportToSTL(objects, "parsed")
+objects += connections
+
+exportToSTL(objects, "DropletGenerator")
 

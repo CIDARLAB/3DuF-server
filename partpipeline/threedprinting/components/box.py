@@ -15,6 +15,7 @@ class Box:
         obj.addProperty("App::PropertyLength","Length","Box", "Length of the box").Length=length
         obj.addProperty("App::PropertyPosition", "Position", "Box", "Position of the box").Position=pnt
         obj.Proxy = self
+        obj.Label = "3DuF_Object"
    
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
@@ -32,4 +33,4 @@ def makeBox(position, width=10.0, height=10.0, length=10.0):
     D.recompute()
     return a
 
-exportToSTL([makeBox([0,0,0])], u"Box")
+# exportToSTL([makeBox([0,0,0])], u"Box")

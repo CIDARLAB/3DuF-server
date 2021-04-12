@@ -16,6 +16,7 @@ class Port:
         obj.addProperty("App::PropertyPosition", "Position", "Port", "Position of the port").Position=pnt
         obj.addProperty("App::PropertyDirection", "Direction", "Port", "Direction of the port").Direction=direction
         obj.Proxy = self
+        obj.Label = "3DuF_Object"
    
     def onChanged(self, fp, prop):
         '''Do something when a property has changed'''
