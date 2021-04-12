@@ -36,6 +36,7 @@ for component in device.components:
         port = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Port")
         Port(port, pos, radius=radius, height=height)
         myDocument.recompute()
+
     elif component.entity == "NOZZLE DROPLET GENERATOR":
         print("droplet")
 
@@ -53,16 +54,14 @@ for component in device.components:
         height = params.get_param("height")/1000
         pos = [x,y,-height/2]
 
-        print(waterInputWidth,oilInputWidth,orificeLength,orificeSize,outputLength,outputWidth, height)
-
         droplet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
         DropletGenerator(droplet, pos, waterInputWidth, oilInputWidth, orificeSize, orificeLength, outputLength, outputWidth, height)
         myDocument.recompute()
+
     else:
         print(component.entity, "not implemented")
         x = (component.xpos)/1000
         y = (component.ypos)/1000
-        print(x,y)
         height = params.get_param("height")/1000
         pos = [x,y,-height/2]
         width = component.xspan/1000
@@ -73,12 +72,13 @@ for component in device.components:
 
 connections = []
 for connection in device.connections:
+    print(connection.name)
     dictionary = connection.__dict__
     waypoints = dictionary["params"].get_param("wayPoints")
     P = []
     for (x,y) in waypoints:
-        x = x
-        y = y
+        x = x/1000
+        y = y/1000
         P.append((x,y,0))
     
     connectionObject = createConnection(P)
@@ -87,9 +87,10 @@ for connection in device.connections:
 
 objects = []
 for obj in FreeCAD.ActiveDocument.Objects:
+    print(obj.Name)
     objects.append(obj)
 
 objects += connections
 
-exportToSTL(objects, "DropletGenerator")
+exportToSTL(objects, "Connection")
 

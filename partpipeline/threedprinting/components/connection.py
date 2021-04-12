@@ -8,7 +8,7 @@ import Mesh
 #     def __init__(self, obj, waypoints, type="circular"):
 
 # waypoints - Array of waypoints in form (x,y,z) tuple
-def createConnection(waypoints, radius=3):
+def createConnection(waypoints, radius=0.05):
     D = FreeCAD.newDocument()
 
     # Path in XYZ
@@ -20,11 +20,9 @@ def createConnection(waypoints, radius=3):
     # Circle to make the cross section of Connection
     pnt = FreeCAD.Vector(P[0][0],P[0][1],P[0][2])
     # 
-    print(pnt)
     [x,y,z] = [P[1][0] - P[0][0], P[1][1] - P[0][1], P[1][2] - P[0][2]]
 
     direction = FreeCAD.Vector(x,y,z)  # which initial direction
-    print(direction)
     circle = Part.makeCircle(radius,pnt,direction)
 
     # Circle Object
@@ -36,7 +34,6 @@ def createConnection(waypoints, radius=3):
     sw = D.addObject('Part::Sweep','Sweep')
     sw.Sections=[D.Section, ]
     edges = ["Edge"+str(x+1) for x in range(len(P)-1)]
-    print(edges)
     sw.Spine=(w,edges)  # Depends on number of waypoints
     sw.Solid=True
     sw.Frenet=False

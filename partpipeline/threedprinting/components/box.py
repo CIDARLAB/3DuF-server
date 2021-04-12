@@ -23,7 +23,7 @@ class Box:
  
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
-        fp.Shape = Part.makeBox(fp.Length,fp.Height,fp.Width,fp.Position)
+        fp.Shape = Part.makeBox(fp.Width,fp.Length,fp.Height,fp.Position)
 
 def makeBox(position, width=10.0, height=10.0, length=10.0):
     D=FreeCAD.newDocument()

@@ -41,15 +41,9 @@ class DropletGenerator:
         sketch.setDatum("outputWidth",fp.outputWidth)
 
         FreeCAD.ActiveDocument.recompute()
-        print("here1")
         wire = sketch.Shape.Wires[0]
         face = Part.Face(wire)
-        print("here2")
         extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
-        print("here2.5")
-
-        print("here3")
-        print(fp.height)
 
         fp.Shape = extr
 
