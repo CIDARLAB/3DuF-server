@@ -32,19 +32,35 @@ class DropletGenerator:
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
         myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/droplet_generation.FCStd")
+
+        sheet = myDocument.getObject("Spreadsheet")
         sketch = myDocument.getObject("Sketch")
-        sketch.setDatum("waterInputWidth",fp.waterInputWidth)
-        sketch.setDatum("oilInputWidth",fp.oilInputWidth)
-        sketch.setDatum("orificeSize",fp.orificeSize)
-        sketch.setDatum("orificeLength",fp.orificeLength)
-        sketch.setDatum("outputLength",fp.outputLength)
-        sketch.setDatum("outputWidth",fp.outputWidth)
-
+        
+        print("here1")
+        sheet.set("waterInputWidth", str(fp.waterInputWidth))
+        sheet.set("oilInputWidth",str(fp.oilInputWidth))
+        sheet.set("orificeSize",str(fp.orificeSize))
+        sheet.set("orificeLength",str(fp.orificeLength))
+        sheet.set("outputLength",str(fp.outputLength))
+        sheet.set("outputWidth",str(fp.outputWidth))
+        sheet.set("height",str(fp.height))
+        sheet.recompute()
         FreeCAD.ActiveDocument.recompute()
-        wire = sketch.Shape.Wires[0]  # check
+        print("here2")
+        # sketch.setDatum("waterInputWidth",fp.waterInputWidth)
+        # sketch.setDatum("oilInputWidth",fp.oilInputWidth)
+        # sketch.setDatum("orificeSize",fp.orificeSize)
+        # sketch.setDatum("orificeLength",fp.orificeLength)
+        # sketch.setDatum("outputLength",fp.outputLength)
+        # sketch.setDatum("outputWidth",fp.outputWidth)
 
-        face = Part.Face(wire)
-        extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
+        # wire = sketch.Shape.Wires[0]  # check
+        extr = myDocument.Extrude
+        # extr.setExpression('Dir.z',fp.height)
+        # print(fp.height)
+        
+        # face = Part.Face(wire)
+        # extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
 
         fp.Shape = extr
 

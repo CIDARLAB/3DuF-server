@@ -11,10 +11,10 @@ class Port:
         [x,y,z] = position
         pnt = FreeCAD.Vector(x,y,z)
         direction = FreeCAD.Vector(0,0,1)
-        obj.addProperty("App::PropertyLength","Radius","Port","Radius of the port").radius=radius
-        obj.addProperty("App::PropertyLength","Height","Port", "Height of the port").height=height
-        obj.addProperty("App::PropertyPosition", "Position", "Port", "Position of the port").position=pnt
-        obj.addProperty("App::PropertyDirection", "Direction", "Port", "Direction of the port").direction=direction
+        obj.addProperty("App::PropertyLength","Radius","Port","Radius of the port").Radius=radius
+        obj.addProperty("App::PropertyLength","Height","Port", "Height of the port").Height=height
+        obj.addProperty("App::PropertyPosition", "Position", "Port", "Position of the port").Position=pnt
+        obj.addProperty("App::PropertyDirection", "Direction", "Port", "Direction of the port").Direction=direction
         obj.Proxy = self
         obj.Label = "3DuF_Object"
    
@@ -24,7 +24,7 @@ class Port:
  
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
-        fp.Shape = Part.makeCylinder(fp.radius, fp.height, fp.position, fp.direction)
+        fp.Shape = Part.makeCylinder(fp.Radius, fp.Height, fp.Position, fp.Direction)
 
 def makePort(position, radius=0.005, height=0.010):
     D=FreeCAD.newDocument()

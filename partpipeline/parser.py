@@ -77,13 +77,15 @@ for connection in device.connections:
     print(connection.name)
     dictionary = connection.__dict__
     waypoints = dictionary["params"].get_param("wayPoints")
+    channelWidth = dictionary["params"].get_param("channelWidth")
+    height = dictionary["params"].get_param("height")
     P = []
     for (x,y) in waypoints:
         x = x/UM_MM
         y = y/UM_MM
         P.append((x,y,0))
     
-    connectionObject = createConnection(P)
+    connectionObject = createConnection(P, myDocument, Type="CIRCLE", channelWidth=channelWidth/UM_MM, height=height/UM_MM)
     connections.append(connectionObject)
 
 
@@ -93,6 +95,5 @@ for obj in FreeCAD.ActiveDocument.Objects:
     objects.append(obj)
 
 objects += connections
-
-exportToSTL(objects, "Connection")
+exportToSTL(objects, "DropletConnections")
 
