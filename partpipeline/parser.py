@@ -95,5 +95,5 @@ for obj in FreeCAD.ActiveDocument.Objects:
     objects.append(obj)
 
 objects += connections
-exportToSTL(objects, "DropletConnections")
+exportToSTL(objects, "DropletTest")
 

@@ -4,6 +4,9 @@ sys.path.append("/usr/lib/freecad-python3/lib")
 import FreeCAD, Draft, Part
 import Mesh
 
+sys.path.append("/home/ubuntu/3DuF-server/partpipeline/threedprinting")
+from export import exportToSTL
+
 # class Connection:
 #     def __init__(self, obj, waypoints, channelWidth, height, Type="circular"):
 #         '''Add some custom properties to our Connection Feature'''
@@ -57,8 +60,6 @@ def createConnection(waypoints, ActiveDocument, Type="CIRCLE",channelWidth=0.1, 
     if len(waypoints) < 2:
         raise ValueError 
 
-    # Circle to make the cross section of Connection
-    pnt = FreeCAD.Vector(P[0][0],P[0][1],P[0][2])
     # 
     [x,y,z] = [P[1][0] - P[0][0], P[1][1] - P[0][1], P[1][2] - P[0][2]]
 
@@ -66,8 +67,10 @@ def createConnection(waypoints, ActiveDocument, Type="CIRCLE",channelWidth=0.1, 
 
     shape = None
     if Type == "CIRCLE":
+        pnt = FreeCAD.Vector(P[0][0],P[0][1],P[0][2])
         shape = Part.makeCircle(channelWidth/2,pnt,direction)
     elif Type == "RECTANGLE":
+        pnt = FreeCAD.Vector(P[0][0]-(channelWidth/2),P[0][1] - (height/2),P[0][2])
         shape = Part.makePlane(channelWidth,height,pnt,direction)
     else:
         raise ValueError
@@ -76,11 +79,13 @@ def createConnection(waypoints, ActiveDocument, Type="CIRCLE",channelWidth=0.1, 
     obj = D.addObject("Part::Feature", "Section")
     obj.Shape = shape
     w=Draft.makeWire(P)
+    print(P)
 
     # Sweep object/Connection
     sw = D.addObject('Part::Sweep','Sweep')
     sw.Sections=[D.Section, ]
-    edges = ["Edge"+str(x+1) for x in range(len(P)-1)]
+    edges = ["Edge" + str(x+1) for x in range(len(P)-1)]
+    print(edges, w)
     sw.Spine=(w,edges)  # Depends on number of waypoints
     sw.Solid=True
     sw.Frenet=False
@@ -88,9 +93,8 @@ def createConnection(waypoints, ActiveDocument, Type="CIRCLE",channelWidth=0.1, 
     return sw  # FreeCAD object of connection
 
 
-# P=[]
-# P.append((0,0,0))  # waypoints
-# P.append((100,0,0))
-# P.append((120,50,0))
-# P.append((120,70,40))
-# exportToSTL([createConnection(P)],u"Test2")
+D = FreeCAD.newDocument()
+P=[]
+P.append((0,0,0))  # waypoints
+P.append((10,0,0))
+exportToSTL([createConnection(P,D, Type="RECTANGLE")],u"Test2")
