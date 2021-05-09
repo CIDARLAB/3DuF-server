@@ -31,7 +31,7 @@ class DropletGenerator:
  
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
-        myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/droplet_generation.FCStd")
+        myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/DROPLET GENERATOR.FCStd")
 
         sheet = myDocument.getObject("Spreadsheet")
         sketch = myDocument.getObject("Sketch")
