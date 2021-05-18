@@ -31,7 +31,7 @@ class DropletGenerator:
  
     def execute(self, fp):
         '''Do something when doing a recomputation, this method is mandatory'''
-        myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/DROPLET GENERATOR.FCStd")
+        myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/NOZZLE DROPLET GENERATOR.FCStd")
 
         sheet = myDocument.getObject("Spreadsheet")
         sketch = myDocument.getObject("Sketch")
@@ -44,6 +44,9 @@ class DropletGenerator:
         sheet.set("outputLength",str(fp.outputLength))
         sheet.set("outputWidth",str(fp.outputWidth))
         sheet.set("height",str(fp.height))
+        sheet.set("x", str(fp.Position[0]))
+        sheet.set("y", str(fp.Position[1]))
+        sheet.set("z", str(fp.Position[2]))
         sheet.recompute()
         FreeCAD.ActiveDocument.recompute()
         print("here2")
@@ -61,14 +64,13 @@ class DropletGenerator:
         
         # face = Part.Face(wire)
         # extr = face.extrude(FreeCAD.Vector(0,0,fp.height))
-
-        fp.Shape = extr
+        fp.Shape = extr.Shape
 
 def makeDroplet(position, waterInputWidth=0.600, oilInputWidth=0.600, orificeSize=0.200,orificeLength=0.300,outputLength=0.600,outputWidth=0.600, height=0.250):
-    D=FreeCAD.newDocument()
-    a=FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
+    D = FreeCAD.newDocument()
+    a = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
     DropletGenerator(a, position, waterInputWidth, oilInputWidth, orificeSize,orificeLength,outputLength,outputWidth, height)
     D.recompute()
     return a
 
-# exportToSTL([makeDroplet([0,0,0])], u"DropletGenerator")
+exportToSTL([makeDroplet([0,0,0])], u"DropletGenerator")

@@ -91,7 +91,6 @@ for connection in device.connections:
 
 objects = []
 for obj in FreeCAD.ActiveDocument.Objects:
-    print(obj.Name)
     objects.append(obj)
 
 objects += connections

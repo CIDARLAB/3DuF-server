@@ -8,7 +8,6 @@ import Mesh
 def exportToSTL(myObjects,directory):
     __objs__ = []
     for myObject in myObjects:
-        print(myObject)
         __objs__.append(myObject)
-    Mesh.export(__objs__,directory + u".stl")
+    Mesh.export(myObjects,directory + u".stl")
     return None
