@@ -25,7 +25,12 @@ class Component:
         obj.Proxy = self
         obj.Label = "3DuF_Object"
 
+    def onChanged(self, fp, prop):
+        '''Do something when a property has changed'''
+        FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
+
     def execute(self, fp):
+        # Need error checking for if the file doesn't exist
         myDocument = FreeCAD.open(u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/" + fp.Type + u".FCStd")
         sheet = myDocument.getObject("Spreadsheet")
         sketch = myDocument.getObject("Sketch")
@@ -37,11 +42,11 @@ class Component:
         sheet.set("z", str(fp.Position[2]))
         sheet.recompute()
         
-        FreeCAD.ActiveDocument.recompute()
+        myDocument.recompute()        
 
         extr = myDocument.Extrude
-
-        fp.Shape = extr.Shape
+        fp.Shape = Part.getShape(extr)
+        print("here")
 
 def makePort(position, radius=0.005, height=0.010):
     D=FreeCAD.newDocument()
@@ -51,4 +56,13 @@ def makePort(position, radius=0.005, height=0.010):
     D.recompute()
     return a
 
+def makeDroplet(position, waterInputWidth=0.600, oilInputWidth=0.600, orificeSize=0.200,orificeLength=0.300,outputLength=0.600,outputWidth=0.600, height=0.250):
+    D = FreeCAD.newDocument()
+    a = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "DropletGenerator")
+    params = {"waterInputWidth": waterInputWidth, "oilInputWidth":oilInputWidth, "orificeSize":orificeSize, "orificeLength":orificeLength,"outputLength":outputLength,"outputWidth":outputWidth,"height":height}
+    Component(a, "NOZZLE DROPLET GENERATOR", position, params)
+    D.recompute()
+    return a
+
 exportToSTL([makePort([0,0,0])], u"Port")
+# exportToSTL([makeDroplet([0,0,0])],u"DropletGeneratorComp")

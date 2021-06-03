@@ -36,7 +36,6 @@ class DropletGenerator:
         sheet = myDocument.getObject("Spreadsheet")
         sketch = myDocument.getObject("Sketch")
         
-        print("here1")
         sheet.set("waterInputWidth", str(fp.waterInputWidth))
         sheet.set("oilInputWidth",str(fp.oilInputWidth))
         sheet.set("orificeSize",str(fp.orificeSize))
@@ -49,7 +48,6 @@ class DropletGenerator:
         sheet.set("z", str(fp.Position[2]))
         sheet.recompute()
         FreeCAD.ActiveDocument.recompute()
-        print("here2")
         # sketch.setDatum("waterInputWidth",fp.waterInputWidth)
         # sketch.setDatum("oilInputWidth",fp.oilInputWidth)
         # sketch.setDatum("orificeSize",fp.orificeSize)
