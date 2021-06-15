@@ -8,15 +8,19 @@ Written by W.R. Jackson <wrjackso@bu.edu>, DAMP Lab 2020
 --------------------------------------------------------------------------------
 """
 import sys
+
 from flask import Flask
 
 sys.path.append("/usr/lib/freecad-python3/lib")
-import FreeCAD, Draft, Part, Mesh
+import Draft
+import FreeCAD
+import Mesh
+import Part
 
 app = Flask(__name__)
 
 
-@app.route('/echo/<input_string>')
+@app.route("/echo/<input_string>")
 def echo(input_string: str):
     return input_string
 
