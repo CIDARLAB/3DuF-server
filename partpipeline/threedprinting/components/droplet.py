@@ -79,11 +79,13 @@ class DropletGenerator:
         obj.Proxy = self
         obj.Label = "3DuF_Object"
 
-    def onChanged(self, fp, prop):
+    @staticmethod
+    def onChanged(fp, prop):
         """Do something when a property has changed"""
         FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
-    def execute(self, fp):
+    @staticmethod
+    def execute(fp):
         """Do something when doing a recomputation, this method is mandatory"""
         myDocument = FreeCAD.open(
             u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/DROPLET GENERATOR.FCStd"
