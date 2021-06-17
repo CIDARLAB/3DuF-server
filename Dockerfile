@@ -31,7 +31,13 @@ ENV THREEDUF_ENV=${THREEDUF_ENV} \
 # Install system level dependencies
 RUN apt-get update
 RUN apt install -y curl
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nginx python3-pip git make build-essential python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libffi-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nginx python3-pip git make build-essential python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libffi-dev locate
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y --fix-missing freecad-python3
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y freecad
+RUN cp -a /usr/lib/freecad/Ext/. /usr/lib/freecad-python3/Ext/
+RUN cp -a /usr/lib/freecad/Gui/. /usr/lib/freecad-python3/Gui/
+RUN cp -a /usr/lib/freecad/Mod/. /usr/lib/freecad-python3/Mod/
 
 # Pyenv for our baseline python environment for poetry later on.
 RUN git clone git://github.com/yyuu/pyenv.git .pyenv
