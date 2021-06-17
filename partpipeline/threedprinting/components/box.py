@@ -29,11 +29,13 @@ class Box:
         obj.Proxy = self
         obj.Label = "3DuF_Object"
 
-    def onChanged(self, fp, prop):
+    @staticmethod
+    def onChanged(fp, prop):
         """Do something when a property has changed"""
         FreeCAD.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
-    def execute(self, fp):
+    @staticmethod
+    def execute(fp):
         """Do something when doing a recomputation, this method is mandatory"""
         fp.Shape = Part.makeBox(fp.Width, fp.Length, fp.Height, fp.Position)
 

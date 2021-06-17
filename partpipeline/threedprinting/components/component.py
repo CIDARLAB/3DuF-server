@@ -33,7 +33,8 @@ class Component:
         obj.Proxy = self
         obj.Label = "3DuF_Object"
 
-    def execute(self, fp):
+    @staticmethod
+    def execute(fp):
         myDocument = FreeCAD.open(
             u"/home/ubuntu/3DuF-server/partpipeline/threedprinting/components/sources/"
             + fp.__entity
