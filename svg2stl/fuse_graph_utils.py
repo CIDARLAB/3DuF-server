@@ -1,5 +1,6 @@
-import networkx as nx
 import pathlib
+
+import networkx as nx
 
 
 def find_fuse_end(G, startnode):

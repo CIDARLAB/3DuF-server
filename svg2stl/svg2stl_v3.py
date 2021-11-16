@@ -1,10 +1,11 @@
 import re
 from typing import List
+
+import BOPTools.JoinFeatures
 import importSVG
+import Mesh
 import Part
 from FreeCAD import Vector
-import Mesh
-import BOPTools.JoinFeatures
 
 SUBSTRATE_Z_DIM = 3000 / 1000
 

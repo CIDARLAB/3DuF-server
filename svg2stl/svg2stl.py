@@ -1,9 +1,10 @@
-import FreeCAD
 import re
+
+import FreeCAD
 import importSVG
+import Mesh
 import Part
 from FreeCAD import Vector
-import Mesh
 
 SUBSTRATE_Z_DIM = 3000
 
@@ -20,7 +21,7 @@ def exportToSTL(myObjects, directory):
 file_name = "EDGE_flow_0.svg"
 
 # Read the file and break apart the name based on regex
-pattern = r'((\w+)_)?(\w+)_(\d+)(_(\d+))?.svg'
+pattern = r"((\w+)_)?(\w+)_(\d+)(_(\d+))?.svg"
 
 # Save first group variable as modifier
 modifier = re.search(pattern, file_name).group(2)
@@ -34,7 +35,7 @@ substrate_number = re.search(pattern, file_name).group(4)
 z_depth = SUBSTRATE_Z_DIM
 # Save fourth group variable as z depth
 if re.search(pattern, file_name).group(6) != None:
-    z_depth = float(re.search(pattern, file_name).group(6))/1000
+    z_depth = float(re.search(pattern, file_name).group(6)) / 1000
 
 print(modifier, layer_type, substrate_number, z_depth)
 
@@ -49,18 +50,18 @@ num_objects = len(doc.Objects)
 # Get the imported object
 for i in range(len(doc.Objects)):
     SVG = doc.Objects[i]
-    if 'Shape' not in dir(SVG):
+    if "Shape" not in dir(SVG):
         print("I'm not sure what this part is with the shape ?")
         continue
-    if SVG.Shape.ShapeType not in ('Wire', 'Edge'):
-            print("Skipping shape {0} of type {1}".format(SVG.Name, SVG.Shape.ShapeType))
-            continue
+    if SVG.Shape.ShapeType not in ("Wire", "Edge"):
+        print("Skipping shape {0} of type {1}".format(SVG.Name, SVG.Shape.ShapeType))
+        continue
 
     try:
         tmp = Part.Face(Part.Wire(Part.__sortEdges__(SVG.Shape.Edges)))
         if tmp.isNull():
             raise ValueError("Face is null")
-        
+
         SVGFace = doc.addObject("Part::Feature", "SVGFace")
         SVGFace.Shape = tmp
         del tmp
@@ -79,9 +80,9 @@ for i in range(len(doc.Objects)):
     SVGExtrude.Base = SVGFace
     SVGExtrude.Dir = Vector(0, 0, z_depth)
     SVGExtrude.Solid = True
-    SVGExtrude.TaperAngle = (0)
+    SVGExtrude.TaperAngle = 0
     # SVGFace.ViewObject.Visibility = False
 
 doc.recompute()
 
-exportToSTL(doc.Objects[num_objects::],'test')
+exportToSTL(doc.Objects[num_objects::], "test")

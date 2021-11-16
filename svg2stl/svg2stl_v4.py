@@ -1,13 +1,13 @@
 import re
 from typing import List
+
+import BOPTools.JoinFeatures
+import Import
 import importSVG
+import Mesh
+import networkx as nx
 import Part
 from FreeCAD import Vector
-import Mesh
-import BOPTools.JoinFeatures
-import networkx as nx
-import Import
-
 from fuse_graph_utils import find_fuse_end, find_global_fuse_ends, printgraph
 
 SUBSTRATE_Z_DIM = 3000 / 1000
