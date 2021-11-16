@@ -35,9 +35,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nginx python3-pip git make
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y --fix-missing freecad-python3
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y freecad
-RUN cp -a /usr/lib/freecad/Ext/. /usr/lib/freecad-python3/Ext/
-RUN cp -a /usr/lib/freecad/Gui/. /usr/lib/freecad-python3/Gui/
-RUN cp -a /usr/lib/freecad/Mod/. /usr/lib/freecad-python3/Mod/
 
 # Pyenv for our baseline python environment for poetry later on.
 RUN git clone git://github.com/yyuu/pyenv.git .pyenv
@@ -48,14 +45,13 @@ ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 ENV ENV_FILE_LOCATION=.env
 
+
+ENV PYTHONPATH="$PYTHONPATH:/usr/lib/freecad/Ext/:/usr/lib/freecad/Gui/:/usr/lib/freecad/Mod/:/usr/lib/freecad-python3/Mod/:/usr/lib/freecad-python3/Gui/:/usr/lib/freecad-python3/Ext/"
+ENV PYTHONPATH="$PYTHONPATH:/usr/share/freecad/Mod/Plot:/usr/share/freecad/Mod/PartDesign:/usr/share/freecad/Mod/Robot:/usr/share/freecad/Mod/Part:/usr/share/freecad/Mod/TechDraw:/usr/share/freecad/Mod/Inspection:/usr/share/freecad/Mod/Drawing:/usr/share/freecad/Mod/Measure:/usr/share/freecad/Mod/OpenSCAD:/usr/share/freecad/Mod/Arch:/usr/share/freecad/Mod/Start:/usr/share/freecad/Mod/ReverseEngineering:/usr/share/freecad/Mod/Sketcher:/usr/share/freecad/Mod/Raytracing:/usr/share/freecad/Mod/Show:/usr/share/freecad/Mod/Test:/usr/share/freecad/Mod/Fem:/usr/share/freecad/Mod/Points:/usr/share/freecad/Mod/AddonManager:/usr/share/freecad/Mod/Web:/usr/share/freecad/Mod/MeshPart:/usr/share/freecad/Mod/Mesh:/usr/share/freecad/Mod/Path:/usr/share/freecad/Mod/Idf:/usr/share/freecad/Mod/Complete:/usr/share/freecad/Mod/Import:/usr/share/freecad/Mod/Surface:/usr/share/freecad/Mod/Material"
+ENV PYTHONPATH="$PYTHONPATH:/usr/share/freecad/Mod/Image:/usr/share/freecad/Mod/Draft:/usr/share/freecad/Mod/Tux:/usr/share/freecad/Mod/Ship:/usr/share/freecad/Mod/Spreadsheet:/usr/share/freecad/Mod:/usr/lib/freecad-python3/lib:/usr/share/freecad/Ext:/usr/lib/freecad/bin/usr/lib/freecad/Macro"
+
 RUN pyenv install 3.8.0
 RUN pyenv global 3.8.0
-
-
-# Install NPM to install our frontend...
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
-RUN bash nodesource_setup.sh
-RUN apt install nodejs
 
 
 WORKDIR /api
