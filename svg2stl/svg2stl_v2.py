@@ -1,9 +1,10 @@
-import FreeCAD
 import re
+
+import FreeCAD
 import importSVG
+import Mesh
 import Part
 from FreeCAD import Vector
-import Mesh
 
 SUBSTRATE_Z_DIM = 3000 / 1000
 
